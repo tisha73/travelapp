@@ -18,7 +18,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from scipy.stats import uniform, randint
 
-#load dataset
+#loading dataset
 positive_reviews = pd.read_csv('data//car_positive_reviews.csv')
 neutral_reviews = pd.read_csv('data//car_neutral_reviews.csv')
 negative_reviews = pd.read_csv('data//car_negative_reviews.csv')
@@ -43,12 +43,12 @@ text_pipeline = Pipeline([
     ('vectorizer', TfidfVectorizer())  # Convert text to vectors
 ])
 
-# Transform the reviews using the pipeline
+# Transforming the reviews using the pipeline
 X_transformed = text_pipeline.fit_transform(merged_df["review"])
 
 
 
-# Encode Sentiment Labels
+# Encoding Sentiment Labels
 sentiment_mapping = {"positive": 1, "negative": 0, "neutral": 2}
 merged_df["sentiment"] = merged_df["sentiment"].map(sentiment_mapping)
 
@@ -60,10 +60,10 @@ vectorizer = TfidfVectorizer(max_features=50000)  # Limits vocab size for effici
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
-# Save vectorizer
+# Saving vectorizer
 pickle.dump(vectorizer, open("tfidf_vectorizer.pkl", "wb"))
 
-# 📌 Function to Evaluate Models
+#  Function to Evaluate Models
 def evaluate_model(model, X_test, y_test):
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
@@ -72,7 +72,7 @@ def evaluate_model(model, X_test, y_test):
     r2 = r2_score(y_test, y_pred)
     return {"Accuracy": acc, "MAE": mae, "RMSE": rmse, "R2 Score": r2}
 
-# 📌 Model 1: Random Forest with Hyperparameter Tuning
+#  Model 1: Random Forest with Hyperparameter Tuning
 param_dist_rf = {
     'n_estimators': randint(100, 300),
     'max_depth': [20, 30, None],
@@ -82,14 +82,14 @@ param_dist_rf = {
 rf = RandomizedSearchCV(RandomForestClassifier(), param_dist_rf, cv=3, scoring='accuracy', n_jobs=-1, n_iter=10, random_state=42)
 rf.fit(X_train_tfidf, y_train)
 
-# Save Random Forest model
+# Saving Random Forest model
 joblib.dump(rf.best_estimator_, "random_forest.pkl")
 
-# Evaluate Random Forest
+# Evaluating Random Forest
 rf_results = evaluate_model(rf.best_estimator_, X_test_tfidf, y_test)
 print("Random Forest Results:", rf_results)
 
-#📌 Model 2: XGBoost with Hyperparameter Tuning
+# Model 2: XGBoost with Hyperparameter Tuning
 param_dist_xgb = {
     'n_estimators': randint(100, 500),
     'learning_rate': uniform(0.01, 0.3),
@@ -99,21 +99,21 @@ param_dist_xgb = {
 xgb_model = RandomizedSearchCV(xgb.XGBClassifier(use_label_encoder=False, eval_metric="mlogloss"), param_dist_xgb, cv=3, scoring='accuracy', n_iter=10, n_jobs=-1, random_state=42)
 xgb_model.fit(X_train_tfidf, y_train)
 
-# Save XGBoost model
+# Saving XGBoost model
 joblib.dump(xgb_model.best_estimator_, "xgboost.pkl")
 
-# Evaluate XGBoost
+# Evaluating XGBoost
 xgb_results = evaluate_model(xgb_model.best_estimator_, X_test_tfidf, y_test)
 print("XGBoost Results:", xgb_results)
 
-#📌 Model 3: Deep Learning Model (TensorFlow)
+# Model 3: Deep Learning Model (TensorFlow)
 tokenizer = Tokenizer(num_words=50000, oov_token="<OOV>")
 tokenizer.fit_on_texts(X_train)
 
 X_train_seq = pad_sequences(tokenizer.texts_to_sequences(X_train), maxlen=100, padding="post")
 X_test_seq = pad_sequences(tokenizer.texts_to_sequences(X_test), maxlen=100, padding="post")
 
-# Build Deep Learning Model
+# Building Deep Learning Model
 tf_model = Sequential([
     Embedding(input_dim=50000, output_dim=32, input_length=100),
     GlobalAveragePooling1D(),
@@ -124,11 +124,11 @@ tf_model = Sequential([
 tf_model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 tf_model.fit(X_train_seq, y_train, epochs=10, batch_size=256, validation_data=(X_test_seq, y_test))
 
-# Save TensorFlow Model
+# Saving TensorFlow Model
 tf_model.save("tf_sentiment_model.h5")
 pickle.dump(tokenizer, open("tokenizer.pkl", "wb"))
 
-# Evaluate Deep Learning Model
+# Evaluating Deep Learning Model
 y_pred_dl = np.argmax(tf_model.predict(X_test_seq), axis=1)
 dl_acc = accuracy_score(y_test, y_pred_dl)
 dl_mae = mean_absolute_error(y_test, y_pred_dl)
@@ -138,7 +138,7 @@ dl_r2 = r2_score(y_test, y_pred_dl)
 dl_results = {"Accuracy": dl_acc, "MAE": dl_mae, "RMSE": dl_rmse, "R2 Score": dl_r2}
 print("Deep Learning Model Results:", dl_results)
 
-# 📌 Compare Model Performance
+#  Comparing Model Performance
 model_comparisons = {
     "Random Forest": rf_results,
     "XGBoost": xgb_results,

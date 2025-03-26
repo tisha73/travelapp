@@ -15,12 +15,12 @@ from xgboost import XGBRegressor
 from sklearn.linear_model import Ridge
 import math
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
-# Load environment variables
+# Loading environment variables
 load_dotenv()
 DB_url = os.getenv('DB_url')
 engine = create_engine(DB_url)
 
-# Load data from MySQL
+# Loading data from MySQL
 with engine.connect() as conn:
     Rent = pd.read_sql("SELECT * FROM Rentals_Table", conn)
     car = pd.read_sql("SELECT * FROM car___table", conn)
@@ -72,7 +72,7 @@ preprocessor = ColumnTransformer([
     ('num', StandardScaler(), numeric_features),
     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
 ])
-# 🔥 Save trained feature names to prevent mismatches
+#  Saving trained feature names to prevent mismatches
 joblib.dump(X.columns.tolist(), "trained_feature_columns.pkl")
 
 
@@ -108,7 +108,7 @@ def objective(trial, model_name, X_train, y_train):
     return -scores.mean()
                           
  
-# Train and Evaluate Models
+# Training and Evaluating Models
 best_models = {}
 model_performance = {}
 
@@ -127,7 +127,7 @@ for model_name in ['XGBoost']:
     best_model.fit(X_train, y_train)
     best_models[model_name] = best_model
 
-    # Evaluate model
+    # Evaluating model
     y_pred = best_model.predict(X_test)
     y = best_model.predict(X_train)
 
@@ -173,6 +173,6 @@ best_model_name = max(model_performance, key=lambda name: model_performance[name
 best_model = best_models[best_model_name]  # Ensure the best model is selected before saving
 print(best_model)
 
-# Save the best model
+# Savimg the best model
 joblib.dump(best_model, 'best_price_prediction_model.pkl')
 print(f"\nBest model ({best_model_name}) saved successfully!")

@@ -128,8 +128,11 @@ CREATE TABLE Rentals_Table (
     FOREIGN KEY (Car_ID) REFERENCES  Cars_Table(Car_ID),
     FOREIGN KEY (User_ID) REFERENCES passenger1(usercode) 
 );
-ALTER TABLE Rentals_Table MODIFY COLUMN Duration VARCHAR(20);
+ALTER TABLE Test_car MODIFY COLUMN Duration VARCHAR(20);
 DESC Test_car;
+
+SHOW TRIGGERS LIKE 'Test_car';
+
 CREATE TABLE Test_car (
     Rental_ID INT AUTO_INCREMENT PRIMARY KEY,
     Car_ID INT, 
