@@ -113,7 +113,7 @@ class CarRecommendationSystem:
             return
 
         similarity_scores = self.similarity_matrix[selected_car_index]
-        similar_car_indices = np.argsort(similarity_scores)[::-1][1:40]  # Consider top 10 cars for diversity
+        similar_car_indices = np.argsort(similarity_scores)[::-1][1:40]  # Consider top 40 cars for diversity
 
         # Step 1: Group cars by Make
         make_groups = {}  
