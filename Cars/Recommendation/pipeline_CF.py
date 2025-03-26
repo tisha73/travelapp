@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sqlalchemy import create_engine, exc
 from sklearn.metrics.pairwise import cosine_similarity
-
+from collections import defaultdict
 
 def get_db_connection():
     """Establish optimized database connection using SQLAlchemy with connection pooling."""
