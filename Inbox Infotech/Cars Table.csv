@@ -1,0 +1,41 @@
+Make,Model,Car Type,Mileage,Year of Manufacture
+Volkswagen,Volkswagen Tiguan,SUV,15 kmpl,2007
+Volkswagen,Volkswagen Taigun,SUV,19.20 kmpl (1.0 TSI Manual),2021
+Volkswagen,Volkswagen Passat,Sedan,18 kmpl,2010
+Volkswagen,Volkswagen Virtus,Sedan,20 kmpl,2018
+Volkswagen,Volkswagen Arteon,Luxury,14 kmpl,2017
+Volkswagen,Volkswagen Touareg,Luxury,12 kmpl,2002
+Volkswagen,Volkswagen Polo,Hatchback,18 kmpl,2019
+Volkswagen,Volkswagen Golf,Hatchback,17 kmpl,2005
+Toyota,Toyota Fortuner,SUV,12 kmpl,2004
+Toyota,Toyota Land Cruiser,SUV,9 kmpl,2001
+Toyota,Toyota Camry,Sedan,19 kmpl,2017
+Toyota,Toyota Corolla,Sedan,18 kmpl,2011
+Toyota,Toyota Crown,Luxury,12 kmpl,2008
+Toyota,Toyota Mirai,Luxury,15 kmpl,2014
+Toyota,Toyota Yaris,Hatchback,20 kmpl,2015
+Toyota,Toyota Glanza,Hatchback,21 kmpl,2019
+Ford,Ford Endeavour,SUV,12 kmpl,2003
+Ford,Ford Bronco,SUV,10 kmpl,2024
+Ford,Ford Fusion,Sedan,15 kmpl,2015
+Ford,Ford Taurus,Sedan,14 kmpl,2022
+Ford,Ford Mustang,Luxury,10 kmpl,1964
+Ford,Ford GT,Luxury,7 kmpl,2004
+Ford,Ford Fiesta,Hatchback,18 kmpl,2012
+Ford,Ford Focus,Hatchback,17 kmpl,2018
+Honda,Honda CR-V,SUV,14 kmpl,2020
+Honda,Honda HR-V,SUV,16 kmpl,2018
+Honda,Honda Accord,Sedan,17 kmpl,2013
+Honda,Honda City,Sedan,19 kmpl,2012
+Honda,Honda Legend,Luxury,12 kmpl,2001
+Honda,Honda NSX,Luxury,10 kmpl,1999
+Honda,Honda Jazz,Hatchback,18 kmpl,2001
+Honda,Honda Brio,Hatchback,20 kmpl,2011
+Hyundai,Hyundai Creta,SUV,18 kmpl,2014
+Hyundai,Hyundai Tucson,SUV,15 kmpl,2004
+Hyundai,Hyundai Verna,Sedan,19 kmpl,2018
+Hyundai,Hyundai Elantra,Sedan,17 kmpl,2016
+Hyundai,Hyundai Genesis G90,Luxury,10 kmpl,2015
+Hyundai,Hyundai Palisade,Luxury,12 kmpl,2018
+Hyundai,Hyundai i20,Hatchback,20 kmpl,2008
+Hyundai,Hyundai Grand i10 Nios,Hatchback,21 kmpl,2019
