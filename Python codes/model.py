@@ -27,13 +27,13 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, StackingRegressor
 from xgboost import XGBRegressor
 import optuna
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.regularizers import l2
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
-from tensorflow.keras.losses import Huber
-from tensorflow.keras.layers import LeakyReLU
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
+# from tensorflow.keras.optimizers import Adam
+# from tensorflow.keras.regularizers import l2
+# from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+# from tensorflow.keras.losses import Huber
+# from tensorflow.keras.layers import LeakyReLU
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
@@ -122,48 +122,48 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-# Neural Network Model
-def build_nn():
-    model = Sequential([
-        Dense(256, kernel_regularizer=l2(0.001), input_shape=(X_train_scaled.shape[1],)),
-        LeakyReLU(alpha=0.1),
-        BatchNormalization(),
-        Dropout(0.4),
+# # Neural Network Model
+# def build_nn():
+#     model = Sequential([
+#         Dense(256, kernel_regularizer=l2(0.001), input_shape=(X_train_scaled.shape[1],)),
+#         LeakyReLU(alpha=0.1),
+#         BatchNormalization(),
+#         Dropout(0.4),
 
-        Dense(128, kernel_regularizer=l2(0.001)),
-        LeakyReLU(alpha=0.1),
-        BatchNormalization(),
-        Dropout(0.4),
+#         Dense(128, kernel_regularizer=l2(0.001)),
+#         LeakyReLU(alpha=0.1),
+#         BatchNormalization(),
+#         Dropout(0.4),
 
-        Dense(64, kernel_regularizer=l2(0.001)),
-        LeakyReLU(alpha=0.1),
-        BatchNormalization(),
-        Dropout(0.3),
+#         Dense(64, kernel_regularizer=l2(0.001)),
+#         LeakyReLU(alpha=0.1),
+#         BatchNormalization(),
+#         Dropout(0.3),
 
-        Dense(32, kernel_regularizer=l2(0.001)),
-        LeakyReLU(alpha=0.1),
+#         Dense(32, kernel_regularizer=l2(0.001)),
+#         LeakyReLU(alpha=0.1),
 
-        Dense(1)  # Output layer for regression
-    ])
+#         Dense(1)  # Output layer for regression
+#     ])
     
-    model.compile(optimizer=Adam(learning_rate=0.005), loss=Huber(delta=1.0), metrics=['mae'])
-    return model
+#     model.compile(optimizer=Adam(learning_rate=0.005), loss=Huber(delta=1.0), metrics=['mae'])
+#     return model
 
-# Train the improved model
-nn_model = build_nn()
-nn_callbacks = [
-    ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=4, min_lr=1e-6),
-    EarlyStopping(monitor='val_loss', patience=8, restore_best_weights=True)
-]
+# # Train the improved model
+# nn_model = build_nn()
+# nn_callbacks = [
+#     ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=4, min_lr=1e-6),
+#     EarlyStopping(monitor='val_loss', patience=8, restore_best_weights=True)
+# ]
 # Disable shuffling
-history = nn_model.fit(X_train_scaled, y_train, validation_data=(X_test_scaled, y_test), 
-                        epochs=150, batch_size=64, verbose=1, callbacks=nn_callbacks, shuffle=False)
-
 # history = nn_model.fit(X_train_scaled, y_train, validation_data=(X_test_scaled, y_test), 
-#                         epochs=150, batch_size=64, verbose=1, callbacks=nn_callbacks)
+#                         epochs=150, batch_size=64, verbose=1, callbacks=nn_callbacks, shuffle=False)
 
-# Make Predictions
-y_pred_nn = nn_model.predict(X_test_scaled).flatten()
+# # history = nn_model.fit(X_train_scaled, y_train, validation_data=(X_test_scaled, y_test), 
+# #                         epochs=150, batch_size=64, verbose=1, callbacks=nn_callbacks)
+
+# # Make Predictions
+# y_pred_nn = nn_model.predict(X_test_scaled).flatten()
 
 # # Neural Network Model
 # def build_nn():
@@ -201,4 +201,4 @@ def evaluate_model(name, y_true, y_pred):
 
 evaluate_model("Optimized XGBoost", y_test, y_pred_xgb)
 evaluate_model("Stacking Model", y_test, y_pred_stack)
-evaluate_model("Neural Network", y_test, y_pred_nn)
+# evaluate_model("Neural Network", y_test, y_pred_nn)
