@@ -503,7 +503,7 @@ print(f"Mean Squared Error (MSE): {mse:.4f}")
 print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
 print(f"Mean Absolute Error (MAE): {mae:.4f}")
 print(f"R² Score: {r2:.4f}")
-
+           
 
 joblib.dump(stacking_model, "best_model_Car.pkl")
 joblib.dump(preprocessor, "preprocessor_Car.pkl")

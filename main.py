@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import mysql.connector
 
@@ -14,11 +15,30 @@ cursor = db.cursor()
 # hotel_df = pd.read_excel('data\HotelFINALdataset.xlsx', engine='openpyxl') 
 # guest_profile_df = pd.read_excel('data\GuestFINALdataset.xlsx', engine='openpyxl') 
 # car_rent_df = pd.read_excel('data\CarFINALdataset.xlsx', engine='openpyxl')  # Replace with your file path
-Reviewss = pd.read_excel('data//Car_FR.xlsx')  # Replace with your file path
+# Reviewss = pd.read_excel('data//Car_FR.xlsx')  # Replace with your file path
+Test_car_df = pd.read_csv('data\CAR_RENTAL.csv')
+# location_table_df = pd.read_excel('data//Location_Table (1).xlsx', engine='openpyxl')
+# car_table_df = pd.read_excel('data//Car-----Table.xlsx', engine='openpyxl')
+# rental_table_df = pd.read_csv('data\CAR_RENTAL.csv')
+# isha = pd.read_excel("data\Location_Table (1).xlsx")
+# Test_car_df['Check-in'] = pd.to_datetime(Test_car_df['Check-in'], format='%m/%d/%Y', errors='coerce').dt.strftime('%Y-%m-%d')
 
-# car_rent_df['Check-in'] = pd.to_datetime(car_rent_df['Check-in'], format='%m/%d/%Y', errors='coerce').dt.strftime('%Y-%m-%d')
+# Convert 'Rental_Date' and 'Return_Date' to proper MySQL format
+# rental_table_df['rental_date'] = pd.to_datetime(
+#     rental_table_df['rental_date'], format='mixed', errors='coerce'
+# ).dt.strftime("%Y-%m-%d %H:%M:%S")
+# rental_table_df['return_date'] = pd.to_datetime(
+#     rental_table_df['return_date'], format='mixed', errors='coerce'
+# ).dt.strftime("%Y-%m-%d %H:%M:%S")
 
-
+Test_car_df['rental_date'] = pd.to_datetime(
+    Test_car_df['rental_date'], format='mixed', errors='coerce'
+).dt.strftime("%Y-%m-%d %H:%M:%S")
+Test_car_df['return_date'] = pd.to_datetime(
+    Test_car_df['return_date'], format='mixed', errors='coerce'
+).dt.strftime("%Y-%m-%d %H:%M:%S")
+# rental_table_df['rental_date'] = pd.to_datetime(rental_table_df['rental_date'], format="%d-%m-%Y %H:%M").dt.strftime("%Y-%m-%d %H:%M:%S")
+# rental_table_df['return_date'] = pd.to_datetime(rental_table_df['return_date'], format="%d-%m-%Y %H:%M").dt.strftime("%Y-%m-%d %H:%M:%S")
 
 # car_rent_df['Check-in'] = pd.to_datetime(car_rent_df['Check-in'], format='%d/%m/%Y').dt.strftime('%Y-%m-%d')
 
@@ -73,12 +93,61 @@ Reviewss = pd.read_excel('data//Car_FR.xlsx')  # Replace with your file path
 #           row['fuelPolicy'], row['Car_bookingStatus'], row['total_rent_price']))
 
 # car_rent_df.drop('Rent_Date',axis=1)
+
+# for i, row in Test_car_df.iterrows():
+#     cursor.execute("""
+#        INSERT INTO Test_car (User_ID, TravelCode, Rent_Date, Pickup_Location, Dropoff_Location, Car_Type, 
+#                               Rental_Agency, Rental_Duration, Car_Total_Distance, Fuel_Policy, Car_BookingStatus, 
+#                               Total_Rent_Price)
+#         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+
+#     """, (row['User_ID'], row['travelCode'], row['Check-in'], row['pickupLocation'], row['dropoffLocation'], 
+#           row['carType'], row['rentalAgency'], row['rentalDuration'], row['Car_total_distance'], 
+#           row['fuelPolicy'], row['Car_bookingStatus'], row['total_rent_price']))
+
+# Test_car_df.drop('Rent_Date',axis=1)
+
+# print(car_table_df.info())
+# car_table_df.columns = car_table_df.columns.str.strip()
+
+# data = [
+#     (row['Car_Id'], row['LocationID'], row['Make'], row['Model'], row['Year of Manufacture'], row['Car Type'], row['Price per Hour (INR)'], row['Mileage (km/l)'], row['City'], row['Agency_Name'], row['Base_Fare'], row['Occupancy'], row['Fuel Policy'], row['AC'], row['Transmission'], row['Luggage Capacity'], row['Unlimited Mileage'], row['Free Cancellation'], row['Ratings'])
+#     for _, row in car_table_df.iterrows()
+# ]
+
+# cursor.executemany("""
+#     INSERT INTO car___table (Car_ID, Location_ID, Make, Model, Year_of_Manufacture, CarType, Price_per_Hour, Mileage, City, Agency_Name, Base_Fare,Occupancy,Fuel_Policy,AC,Transmission,Luggage_Capacity,Unlimited_Mileage,Free_Cancellation,Ratings)
+#     VALUES (%s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s)
+# """, data)
+# for car rental table 
+# print(rental_table_df.info())
+
+data = [
+    (row['Car_Id'], row['user_id'], row['Pickup_Location'], row['rental_date'], row['return_date'], row['Duration_Hours'], row['Formatted_Duration'])
+    for _, row in Test_car_df.iterrows()
+]
+
+cursor.executemany("""
+    INSERT INTO Test_car ( Car_ID, User_ID, Pickup_Location, Rental_Date, Return_Date, Duration_Hours,Duration)
+    VALUES (%s, %s, %s, %s, %s,%s, %s)
+""", data)
+#  for location table
+# data = [
+#     (row['LocationID'], row['Name'], row['Address'], row['City'], row['Country'])
+#     for _, row in location_table_df.iterrows()
+# ]
+# cursor.executemany("""
+#     INSERT INTO Location_Table (Location_ID, Name, Address, City, Country)
+#     VALUES (%s, %s, %s, %s, %s)
+# """, data)
+
+
 # Review_df = Review_df.where(pd.notna(Review_df), None)
-for i, row in Reviewss.iterrows():
-    cursor.execute("""
-        INSERT INTO Car_review (Review)
-        VALUES (%s)
-    """, ( row['Review_text'],))
+# for i, row in Reviewss.iterrows():
+#     cursor.execute("""
+#         INSERT INTO Car_review (Review)
+#         VALUES (%s)
+#     """, ( row['Review_text'],))
     
 db.commit()
 cursor.close()
